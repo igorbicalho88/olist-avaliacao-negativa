@@ -10,6 +10,7 @@ Projeto de ciência de dados de ponta a ponta com dados reais de cerca de 100 mi
 - **Atraso é o fator mais forte:** pedidos atrasados têm **62%** de avaliações negativas, contra **9%** dos pedidos entregues no prazo (**~6,7x**).
 - Mesmo assim, **68% das avaliações negativas acontecem em pedidos entregues no prazo**. Por isso um modelo que combine vários fatores é necessário.
 - O modelo final (gradient boosting) aponta uma lista de ~630 pedidos em que **58% realmente recebem avaliação negativa**, contra 9,7% de uma escolha aleatória: o atendimento fica **~6x mais eficiente** ao decidir quem contatar.
+- O modelo virou uma **ferramenta para o atendimento**: um programa para Windows que lê uma planilha de pedidos e gera um Excel com quem contatar, o motivo do risco e a ação sugerida ([baixar](https://github.com/igorbicalho88/olist-avaliacao-negativa/releases/latest)).
 
 ---
 
@@ -175,6 +176,32 @@ O script gera uma lista ordenada do maior para o menor risco, com a probabilidad
 
 **Validação:** aplicado aos 19.165 pedidos do período de teste, o script alertou 628 pedidos, e 58% deles realmente receberam avaliação negativa (contra 9,7% no geral).
 
+## Ferramenta para o atendimento (Windows)
+
+Para quem não usa Python, o modelo também está disponível como um programa para Windows, que funciona sem instalar nada.
+
+**Download:** [AvaliacaoRisco.exe](https://github.com/igorbicalho88/olist-avaliacao-negativa/releases/latest), na página de Releases do repositório.
+
+**Como usar:**
+
+1. Abra o `AvaliacaoRisco.exe` e escolha o CSV com os pedidos entregues (ou arraste o CSV para cima do programa).
+2. O programa mostra quantos pedidos precisam de atenção e salva, ao lado do CSV, um Excel com o final `_com_risco.xlsx`:
+   - aba **"Precisam de atenção"**: só os pedidos de risco alto, com o **motivo** (ex.: "Entregue com 15 dia(s) de atraso", "2 vendedores: pode ter chegado só parte do pedido") e a **ação sugerida**;
+   - aba **"Todos os pedidos"**: a lista completa, colorida por nível de risco (alto, médio e baixo).
+
+O CSV precisa ter as colunas do arquivo [`exemplo_pedidos.csv`](exemplo_pedidos.csv). Ele é aceito separado por vírgula ou por ponto e vírgula (padrão do Excel em português). Colunas extras, como nome e telefone do cliente, são copiadas para o resultado.
+
+> Na primeira execução, o Windows pode mostrar o aviso "O Windows protegeu o computador", porque o programa não tem assinatura digital. Clique em **Mais informações → Executar assim mesmo**.
+
+**Gerar o executável a partir do código** (com o ambiente do projeto ativo):
+
+```bash
+pip install pyinstaller openpyxl
+pyinstaller --onefile --windowed --clean --name AvaliacaoRisco --collect-submodules sklearn --add-data "models/modelo_avaliacao_negativa.joblib;models" app_risco.py
+```
+
+O programa fica em `dist/AvaliacaoRisco.exe`.
+
 ## 9. Estrutura do projeto
 
 ```
@@ -189,13 +216,15 @@ olist-avaliacao-negativa/
 ├── reports/figures/         # gráficos usados neste README
 ├── models/                  # modelo treinado (.joblib)
 ├── prever.py                # script que calcula o risco de pedidos novos
+├── app_risco.py             # ferramenta com janela (origem do AvaliacaoRisco.exe)
+├── exemplo_pedidos.csv      # modelo de arquivo de entrada para a ferramenta
 ├── requirements.txt
 └── README.md
 ```
 
 ## 10. Tecnologias
 
-Python · pandas · NumPy · scikit-learn · Matplotlib · Jupyter
+Python · pandas · NumPy · scikit-learn · Matplotlib · Jupyter · joblib · PyInstaller · openpyxl
 
 ## Autor
 
