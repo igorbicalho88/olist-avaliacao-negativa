@@ -1,0 +1,13 @@
+# Dados brutos (baixados do Kaggle; muito grandes para o GitHub)
+data/raw/
+
+# Dados processados (gerados pelo notebook 02)
+data/processed/
+
+# Ambiente virtual
+.venv/
+
+# Arquivos temporários do Python e do Jupyter
+__pycache__/
+.ipynb_checkpoints/
+*.pyc
