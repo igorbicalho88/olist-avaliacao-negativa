@@ -18,3 +18,4 @@ dist/
 *.spec
 *_com_risco.csv
 *_com_risco.xlsx
+teste_*.xlsx

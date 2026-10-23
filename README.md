@@ -10,7 +10,7 @@ Projeto de ciência de dados de ponta a ponta com dados reais de cerca de 100 mi
 - **Atraso é o fator mais forte:** pedidos atrasados têm **62%** de avaliações negativas, contra **9%** dos pedidos entregues no prazo (**~6,7x**).
 - Mesmo assim, **68% das avaliações negativas acontecem em pedidos entregues no prazo**. Por isso um modelo que combine vários fatores é necessário.
 - O modelo final (gradient boosting) aponta uma lista de ~630 pedidos em que **58% realmente recebem avaliação negativa**, contra 9,7% de uma escolha aleatória: o atendimento fica **~6x mais eficiente** ao decidir quem contatar.
-- O modelo virou uma **ferramenta para o atendimento**: um programa para Windows que lê uma planilha de pedidos e gera um Excel com quem contatar, o motivo do risco e a ação sugerida ([baixar](https://github.com/igorbicalho88/olist-avaliacao-negativa/releases/latest)).
+- O modelo virou uma **ferramenta para o atendimento**: um programa para Windows que lê a planilha de pedidos da empresa (Excel ou CSV) e gera um Excel com quem contatar, o motivo do risco e a ação sugerida ([baixar](https://github.com/igorbicalho88/olist-avaliacao-negativa/releases/latest)).
 
 ---
 
@@ -184,12 +184,32 @@ Para quem não usa Python, o modelo também está disponível como um programa p
 
 **Como usar:**
 
-1. Abra o `AvaliacaoRisco.exe` e escolha o CSV com os pedidos entregues (ou arraste o CSV para cima do programa).
-2. O programa mostra quantos pedidos precisam de atenção e salva, ao lado do CSV, um Excel com o final `_com_risco.xlsx`:
+1. Abra o `AvaliacaoRisco.exe` e escolha a planilha com os pedidos entregues, em **Excel (.xlsx) ou CSV** (ou arraste a planilha para cima do programa).
+2. O programa mostra quantos pedidos precisam de atenção e salva, ao lado da planilha, um Excel com o final `_com_risco.xlsx`:
    - aba **"Precisam de atenção"**: só os pedidos de risco alto, com o **motivo** (ex.: "Entregue com 15 dia(s) de atraso", "2 vendedores: pode ter chegado só parte do pedido") e a **ação sugerida**;
-   - aba **"Todos os pedidos"**: a lista completa, colorida por nível de risco (alto, médio e baixo).
+   - aba **"Todos os pedidos"**: a lista completa, colorida por nível de risco (alto, médio e baixo);
+   - aba **"Não analisados"** (quando houver): pedidos que não puderam ser avaliados e o porquê (ex.: ainda sem data de entrega).
 
-O CSV precisa ter as colunas do arquivo [`exemplo_pedidos.csv`](exemplo_pedidos.csv). Ele é aceito separado por vírgula ou por ponto e vírgula (padrão do Excel em português). Colunas extras, como nome e telefone do cliente, são copiadas para o resultado.
+**Qual planilha usar:** uma linha por pedido, com as informações abaixo, **usando os nomes de coluna que a empresa já usa**. Veja o modelo [`exemplo_planilha_simples.xlsx`](exemplo_planilha_simples.xlsx).
+
+| Informação | Obrigatória? |
+|---|---|
+| Código do pedido, data da compra, data prometida de entrega, data de entrega | Sim |
+| Valor dos produtos, valor do frete, quantidade de itens | Sim |
+| Quantidade de vendedores, UF do cliente e do vendedor, forma de pagamento, parcelas, categoria | Recomendadas |
+| Data de aprovação do pagamento, data de envio, peso, fotos e tamanho da descrição dos anúncios | Opcionais |
+
+- O programa **reconhece sozinho** os nomes mais comuns ("Nº do pedido", "Prazo de entrega", "Valor (R$)", "UF cliente"...). Quando não reconhece, abre uma janela para indicar qual coluna corresponde a cada informação e **lembra da escolha** nas próximas vezes (a escolha fica em `%APPDATA%\AvaliacaoRisco\colunas.json`; apague o arquivo para escolher de novo).
+- Aceita datas como `02/08/2026` ou `2026-08-02`, valores como `1.234,56` ou `R$ 89,90`, estados por sigla ou por nome e formas de pagamento escritas em português.
+- A partir dessas informações, o programa **calcula sozinho as 24 variáveis** que o modelo usa. As informações que faltarem são tratadas como ausentes pelo modelo.
+- Colunas extras (nome, telefone e e-mail do cliente, por exemplo) são copiadas para o resultado.
+- O formato completo, com as 24 colunas já calculadas ([`exemplo_pedidos.csv`](exemplo_pedidos.csv)), continua sendo aceito.
+
+**Validação do cálculo automático:** os 19.165 pedidos do período de teste foram montados no formato de planilha simples a partir das tabelas originais.
+- Com todas as informações, o programa reproduziu **exatamente** as previsões do modelo (628 alertas, 58% de acerto).
+- Só com as informações obrigatórias e recomendadas, e datas sem horário: 542 alertas, com **58,1%** de acerto (contra 9,7% no geral).
+
+**Limitações:** o modelo foi treinado com dados de 2016 a 2018 da Olist. Categorias e formas de pagamento que ele não conhece (como Pix) são tratadas como desconhecidas. Para usar com os dados de outra empresa, o ideal é retreinar o modelo com o histórico dela.
 
 > Na primeira execução, o Windows pode mostrar o aviso "O Windows protegeu o computador", porque o programa não tem assinatura digital. Clique em **Mais informações → Executar assim mesmo**.
 
@@ -217,7 +237,8 @@ olist-avaliacao-negativa/
 ├── models/                  # modelo treinado (.joblib)
 ├── prever.py                # script que calcula o risco de pedidos novos
 ├── app_risco.py             # ferramenta com janela (origem do AvaliacaoRisco.exe)
-├── exemplo_pedidos.csv      # modelo de arquivo de entrada para a ferramenta
+├── exemplo_planilha_simples.xlsx  # modelo de planilha para a ferramenta
+├── exemplo_pedidos.csv      # formato completo (24 colunas), também aceito
 ├── requirements.txt
 └── README.md
 ```
