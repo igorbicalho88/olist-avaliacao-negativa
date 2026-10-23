@@ -11,3 +11,10 @@ data/processed/
 __pycache__/
 .ipynb_checkpoints/
 *.pyc
+
+# executável (PyInstaller)
+build/
+dist/
+*.spec
+*_com_risco.csv
+*_com_risco.xlsx

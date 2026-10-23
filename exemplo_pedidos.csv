@@ -1,0 +1,6 @@
+﻿categoria;cliente;telefone;estado_vendedor;estado_cliente;forma_pagamento;horas_aprovacao;dias_ate_transportadora;mes_compra;dia_semana_compra;valor_total;frete_total;peso_total_g;fotos_media;tam_descricao_media;n_parcelas;n_formas_pagamento;mesmo_estado;dias_entrega;dias_prometidos;n_itens;n_produtos;n_vendedores;order_id;dias_atraso;atrasado;frete_sobre_valor
+beleza_saude;Ana Souza;(31) 90000-0001;SP;MG;credit_card;0,4;1;8;2;120,0;20,0;600;3;700;2;1;0;5;20;1;1;1;A_rapida_no_prazo;-15;0;0,1666666666666666
+beleza_saude;Bruno Lima;(31) 90000-0002;SP;MG;credit_card;0,4;1;8;2;120,0;20,0;600;3;700;2;1;0;22;20;1;1;1;B_atraso_2_dias;2;1;0,1666666666666666
+beleza_saude;Carla Dias;(31) 90000-0003;SP;MG;credit_card;0,4;1;8;2;120,0;20,0;600;3;700;2;1;0;35;20;1;1;1;C_atraso_15_dias;15;1;0,1666666666666666
+beleza_saude;Diego Rocha;(31) 90000-0004;SP;MG;credit_card;0,4;1;8;2;120,0;20,0;600;3;700;2;1;0;10;20;3;3;2;D_no_prazo_2_vendedores;-10;0;0,1666666666666666
+beleza_saude;Elisa Melo;(31) 90000-0005;SP;MG;credit_card;0,4;1;8;2;120,0;20,0;600;3;700;2;1;0;35;20;3;3;2;E_atraso_e_2_vendedores;15;1;0,1666666666666666
