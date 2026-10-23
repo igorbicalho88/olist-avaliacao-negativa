@@ -12,6 +12,8 @@ Projeto de ciência de dados de ponta a ponta com dados reais de cerca de 100 mi
 - O modelo final (gradient boosting) aponta uma lista de ~630 pedidos em que **58% realmente recebem avaliação negativa**, contra 9,7% de uma escolha aleatória: o atendimento fica **~6x mais eficiente** ao decidir quem contatar.
 - O modelo virou uma **ferramenta para o atendimento**: um programa para Windows que lê a planilha de pedidos da empresa (Excel ou CSV) e gera um Excel com quem contatar, o motivo do risco e a ação sugerida ([baixar](https://github.com/igorbicalho88/olist-avaliacao-negativa/releases/latest)).
 
+> **Continuação:** veja este modelo em produção, integrado a um banco PostgreSQL, com previsão agendada e painel no Power BI atualizado em tempo quase real: [**monitoramento-risco-pedidos**](https://github.com/igorbicalho88/monitoramento-risco-pedidos).
+
 ---
 
 ## 1. Problema de negócio
