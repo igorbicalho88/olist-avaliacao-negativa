@@ -163,6 +163,18 @@ pip install -r requirements.txt
    - `notebooks/02_features.ipynb`: construção da base do modelo (gera `data/processed/base_modelo.csv`)
    - `notebooks/03_modelagem.ipynb`: treino, avaliação e importância das variáveis
 
+## Como usar o modelo
+
+O modelo treinado fica salvo em `models/modelo_avaliacao_negativa.joblib`. Para calcular o risco de pedidos novos:
+
+```bash
+python prever.py --entrada data/processed/pedidos_novos.csv --saida data/processed/pedidos_com_risco.csv
+```
+
+O script gera uma lista ordenada do maior para o menor risco, com a probabilidade de avaliação negativa e um alerta para os pedidos com probabilidade >= 0,8. O corte pode ser mudado com `--corte 0.7`.
+
+**Validação:** aplicado aos 19.165 pedidos do período de teste, o script alertou 628 pedidos, e 58% deles realmente receberam avaliação negativa (contra 9,7% no geral).
+
 ## 9. Estrutura do projeto
 
 ```
@@ -175,6 +187,8 @@ olist-avaliacao-negativa/
 │   ├── 02_features.ipynb
 │   └── 03_modelagem.ipynb
 ├── reports/figures/         # gráficos usados neste README
+├── models/                  # modelo treinado (.joblib)
+├── prever.py                # script que calcula o risco de pedidos novos
 ├── requirements.txt
 └── README.md
 ```
